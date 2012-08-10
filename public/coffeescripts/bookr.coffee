@@ -1,5 +1,4 @@
 $ ->
-
   # Book
   window.Book = Backbone.Model.extend(
     toggle: ->
@@ -38,11 +37,10 @@ $ ->
   window.BookView = Backbone.View.extend(
     tagName: "li"
     className: "book"
-    template: _.template("<input type='checkbox' class='book-check' /><div class='book-content'></div><span class='book-destroy'></span><input type='text' class='book-input' />")
+    template: _.template("<input type='checkbox' class='book-check' /><div class='book-isbn'></div><span class='book-destroy'></span><input type='text' class='book-input' />")
     events:
       "click .book-check": "toggleSelected"
       "click .book-destroy": "clear"
-      "keypress .book-input": "updateOnEnter"
 
     initialize: ->
       _.bindAll this, "render", "close"
@@ -56,9 +54,9 @@ $ ->
       this
 
     setContent: ->
-      content = @model.get("content")
-      @$(".book-content").html content
-      @$(".book-input").val content
+      isbn = @model.get("isbn")
+      @$(".book-isbn").html isbn
+      @$(".book-input").val isbn
       if @model.get("selected")
         @$(".book-check").prop "checked", true
         $(@el).addClass "selected"
@@ -71,12 +69,7 @@ $ ->
       @model.toggle()
 
     close: ->
-      @model.save content: @input.val("value")
-      $(@el).removeClass "editing"
-
-    updateOnEnter: (e) ->
-      console.log "est-ce qu'on arrive ici?"
-      @close()  if e.code is 13
+      @model.save isbn: @input.val("value")
 
     clear: ->
       @model.clear()
@@ -103,11 +96,11 @@ $ ->
         selected: selected
         total: Books.length
         remaining: Books.length - selected
-      )
+      }
 
     addOne: (book) ->
       view = new BookView(model: book).render().el
-      @$("#book-list").append view
+      @$("#book-list").prepend view
 
     addAll: ->
       Books.each @addOne
@@ -115,7 +108,7 @@ $ ->
     createOnEnter: (e) ->
       return unless e.keyCode is 13
       Books.create
-        content: @input.val()
+        isbn: @input.val()
         selected: false
 
       @input.val("")
