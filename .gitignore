@@ -25,3 +25,4 @@
 # Ignore rcov generated files
 coverage.data
 coverage*
+node_modules
