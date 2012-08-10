@@ -74,7 +74,7 @@ body {
 }
 
 /* line 17 */
-#todoapp {
+#bookr {
   width: 520px;
   margin: 0 auto 40px auto;
   background: white;
@@ -96,7 +96,7 @@ body {
   border-bottom-right-radius: 5px;
 }
 /* line 24 */
-#todoapp .title h1 {
+#bookr .title h1 {
   font-size: 36px;
   font-weight: bold;
   text-align: center;
@@ -104,15 +104,15 @@ body {
   line-height: 1;
 }
 /* line 30 */
-#todoapp .content {
+#bookr .content {
   padding: 20px;
 }
 /* line 32 */
-#todoapp .content #create-todo {
+#bookr .content #create-book {
   position: relative;
 }
 /* line 34 */
-#todoapp .content #create-todo input {
+#bookr .content #create-book input {
   width: 466px;
   font-size: 24px;
   font-family: inherit;
@@ -127,11 +127,11 @@ body {
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
 }
 /* line 45 */
-#todoapp .content #create-todo input::-webkit-input-placeholder {
+#bookr .content #create-book input::-webkit-input-placeholder {
   font-style: italic;
 }
 /* line 47 */
-#todoapp .content #create-todo span {
+#bookr .content #create-book span {
   position: absolute;
   z-index: 999;
   width: 170px;
@@ -140,11 +140,11 @@ body {
   opacity: 0;
 }
 /* line 55 */
-#todoapp .content ul#todo-list {
+#bookr .content ul#book-list {
   margin-top: 10px;
 }
 /* line 57 */
-#todoapp .content ul#todo-list li {
+#bookr .content ul#book-list li {
   padding: 15px 20px 15px 0;
   position: relative;
   font-size: 24px;
@@ -153,7 +153,7 @@ body {
   cursor: move;
 }
 /* line 22, /opt/ree/lib/ruby/gems/1.8/gems/compass-0.10.5/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-#todoapp .content ul#todo-list li:after {
+#bookr .content ul#book-list li:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -162,12 +162,12 @@ body {
   visibility: hidden;
 }
 /* line 64 */
-#todoapp .content ul#todo-list li.editing {
+#bookr .content ul#book-list li.editing {
   padding: 0;
   border-bottom: 0;
 }
 /* line 67 */
-#todoapp .content ul#todo-list li.editing .todo-input {
+#bookr .content ul#book-list li.editing .book-input {
   display: block;
   width: 466px;
   font-size: 24px;
@@ -183,35 +183,35 @@ body {
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
 }
 /* line 79 */
-#todoapp .content ul#todo-list li.editing .todo-content {
+#bookr .content ul#book-list li.editing .book-content {
   display: none;
 }
 /* line 81 */
-#todoapp .content ul#todo-list li.editing .todo-check {
+#bookr .content ul#book-list li.editing .book-check {
   display: none;
 }
 /* line 83 */
-#todoapp .content ul#todo-list li.editing .todo-destroy {
+#bookr .content ul#book-list li.editing .book-destroy {
   display: none !important;
 }
 /* line 85 */
-#todoapp .content ul#todo-list li .todo-input {
+#bookr .content ul#book-list li .book-input {
   display: none;
 }
 /* line 87 */
-#todoapp .content ul#todo-list li .todo-check {
+#bookr .content ul#book-list li .book-check {
   position: relative;
   top: 6px;
   margin: 0 10px 0 7px;
   float: left;
 }
 /* line 93 */
-#todoapp .content ul#todo-list li.done .todo-content {
+#bookr .content ul#book-list li.done .book-content {
   text-decoration: line-through;
   color: #777777;
 }
 /* line 96 */
-#todoapp .content ul#todo-list li .todo-destroy {
+#bookr .content ul#book-list li .book-destroy {
   position: absolute;
   right: 0px;
   top: 16px;
@@ -222,11 +222,11 @@ body {
   background: url(/images/destroy.png) no-repeat center center;
 }
 /* line 106 */
-#todoapp .content ul#todo-list li:hover .todo-destroy {
+#bookr .content ul#book-list li:hover .book-destroy {
   display: block;
 }
 /* line 109 */
-#todoapp #todo-stats {
+#bookr #book-stats {
   *zoom: 1;
   margin-top: 10px;
   color: #555555;
@@ -248,7 +248,7 @@ body {
   line-height: 36px;
 }
 /* line 22, /opt/ree/lib/ruby/gems/1.8/gems/compass-0.10.5/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-#todoapp #todo-stats:after {
+#bookr #book-stats:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -257,20 +257,20 @@ body {
   visibility: hidden;
 }
 /* line 118 */
-#todoapp #todo-stats .todo-count {
+#bookr #book-stats .book-count {
   float: left;
 }
 /* line 120 */
-#todoapp #todo-stats .todo-count .number {
+#bookr #book-stats .book-count .number {
   font-weight: bold;
   color: #555555;
 }
 /* line 123 */
-#todoapp #todo-stats .todo-clear {
+#bookr #book-stats .book-clear {
   float: right;
 }
 /* line 125 */
-#todoapp #todo-stats .todo-clear a {
+#bookr #book-stats .book-clear a {
   display: block;
   line-height: 20px;
   text-decoration: none;
@@ -291,7 +291,7 @@ body {
   box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
 }
 /* line 136 */
-#todoapp #todo-stats .todo-clear a:hover {
+#bookr #book-stats .book-clear a:hover {
   background: rgba(0, 0, 0, 0.15);
   -moz-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
   -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
@@ -299,7 +299,7 @@ body {
   box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
 }
 /* line 139 */
-#todoapp #todo-stats .todo-clear a:active {
+#bookr #book-stats .book-clear a:active {
   position: relative;
   top: 1px;
 }

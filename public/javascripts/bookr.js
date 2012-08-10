@@ -1,13 +1,13 @@
 (function(){
 
-  // Todo
-  window.Todo = Backbone.Model.extend({
+  // Book
+  window.Book = Backbone.Model.extend({
   
     toggle: function() {
       this.save({done: !this.get("done")});
     },
 
-    // Remove this Todo from *localStorage*, deleting its view.
+    // Remove this Book from *localStorage*, deleting its view.
     clear: function() {
       this.destroy();
       $(this.view.el).dispose();
@@ -15,16 +15,16 @@
   
   });
 
-  // Todo List
-  window.TodoList = Backbone.Collection.extend({
+  // Book List
+  window.BookList = Backbone.Collection.extend({
   
-    model: Todo,
-    localStorage: new Store("todos"),
+    model: Book,
+    localStorage: new Store("books"),
   
-    // Returns all done todos.
+    // Returns all done books.
     done: function() {
-      return this.filter(function(todo){
-        return todo.get('done');
+      return this.filter(function(book){
+        return book.get('done');
       });
     },
 
@@ -33,8 +33,8 @@
       return this.last().get('order') + 1;
     },
 
-    comparator: function(todo) {
-      return todo.get('order');
+    comparator: function(book) {
+      return book.get('order');
     },
 
     pluralize: function(count) {
@@ -43,20 +43,20 @@
   
   });
 
-  window.Todos = new TodoList;
+  window.Books = new BookList;
   
-  window.TodoView = Backbone.View.extend({
+  window.BookView = Backbone.View.extend({
   
     tagName: "li",
-    className: "todo",
+    className: "book",
   
-    template: _.template("<input type='checkbox' class='todo-check' /><div class='todo-content'></div><span class='todo-destroy'></span><input type='text' class='todo-input' />"),
+    template: _.template("<input type='checkbox' class='book-check' /><div class='book-content'></div><span class='book-destroy'></span><input type='text' class='book-input' />"),
   
     events: {
-      "click .todo-check"      : "toggleDone",
-      "dblclick .todo-content" : "edit",
-      "click .todo-destroy"    : "clear",
-      "keypress .todo-input"   : "updateOnEnter"
+      "click .book-check"      : "toggleDone",
+      "dblclick .book-content" : "edit",
+      "click .book-destroy"    : "clear",
+      "keypress .book-input"   : "updateOnEnter"
     },
     
     initialize: function() {
@@ -67,26 +67,26 @@
   
     render: function() {
       $(this.el).set('html', this.template(this.model.toJSON()));
-      $(this.el).setProperty("id", "todo-"+this.model.id);
+      $(this.el).setProperty("id", "book-"+this.model.id);
       this.setContent();
-      sortableTodos.addItems(this.el);
+      sortableBooks.addItems(this.el);
       return this;
     },
   
     setContent: function() {      
       var content = this.model.get('content');
-      this.$('.todo-content').set("html", content);
-      this.$('.todo-input').setProperty("value", content);
+      this.$('.book-content').set("html", content);
+      this.$('.book-input').setProperty("value", content);
       
       if (this.model.get('done')) {
-        this.$(".todo-check").setProperty("checked", "checked");
+        this.$(".book-check").setProperty("checked", "checked");
         $(this.el).addClass("done");
       } else {
-        this.$(".todo-check").removeProperty("checked");
+        this.$(".book-check").removeProperty("checked");
         $(this.el).removeClass("done");
       }
       
-      this.input = this.$(".todo-input");
+      this.input = this.$(".book-input");
       this.input.addEvent('blur', this.close);
     },
     
@@ -115,63 +115,63 @@
   
   });
 
-  var sortableTodos = new Sortables("todo-list", {
+  var sortableBooks = new Sortables("book-list", {
     constrain: true,
     clone: true,
-    handle: ".todo-content",
+    handle: ".book-content",
     onComplete: function(ele){
-      sortableTodos.serialize(false, function(element, index){
-        todo = Todos.get(element.getProperty("id").replace("todo-", ""));
-        todo.save({"order": index});
+      sortableBooks.serialize(false, function(element, index){
+        book = Books.get(element.getProperty("id").replace("book-", ""));
+        book.save({"order": index});
       });
     }
   });
 
   window.AppView = Backbone.View.extend({
   
-    el: $("todoapp"),
-    statsTemplate: _.template('<% if (total) { %><span class="todo-count"><span class="number"><%= remaining %></span><span class="word"> <%= remaining == 1 ? "item" : "items" %></span> left.</span><% } %><% if (done) { %><span class="todo-clear"><a href="#">Clear <span class="number-done"><%= done %> </span>completed <span class="word-done"><%= done == 1 ? "item" : "items" %></span></a></span><% } %>'),
+    el: $("bookr"),
+    statsTemplate: _.template('<% if (total) { %><span class="book-count"><span class="number"><%= remaining %></span><span class="word"> <%= remaining == 1 ? "item" : "items" %></span> left.</span><% } %><% if (done) { %><span class="book-clear"><a href="#">Clear <span class="number-done"><%= done %> </span>completed <span class="word-done"><%= done == 1 ? "item" : "items" %></span></a></span><% } %>'),
   
     events: {
-      "keypress #new-todo" : "createOnEnter",
-      "keyup #new-todo"    : "showTooltip",
-      "click .todo-clear"  : "clearCompleted"
+      "keypress #new-book" : "createOnEnter",
+      "keyup #new-book"    : "showTooltip",
+      "click .book-clear"  : "clearCompleted"
     },
   
     initialize: function() {
       _.bindAll(this, 'addOne', 'addAll', 'render');
     
-      this.input = this.$("#new-todo");
+      this.input = this.$("#new-book");
       
-      Todos.bind('add',     this.addOne);
-      Todos.bind('refresh', this.addAll);
-      Todos.bind('all',     this.render);
+      Books.bind('add',     this.addOne);
+      Books.bind('refresh', this.addAll);
+      Books.bind('all',     this.render);
     
-      Todos.fetch();
+      Books.fetch();
     },
     
     render: function() {
-      var done = Todos.done().length;
-      this.$("#todo-stats").set("html",this.statsTemplate({
+      var done = Books.done().length;
+      this.$("#book-stats").set("html",this.statsTemplate({
         done:       done,
-        total:      Todos.length,
-        remaining:  Todos.length - done
+        total:      Books.length,
+        remaining:  Books.length - done
       }));
     },
     
-    addOne: function(todo) {
-      var view = new TodoView({model: todo}).render().el;
-      this.$("#todo-list").grab(view);
-      sortableTodos.addItems(view);
+    addOne: function(book) {
+      var view = new BookView({model: book}).render().el;
+      this.$("#book-list").grab(view);
+      sortableBooks.addItems(view);
     },
     
     addAll: function() {
-      Todos.each(this.addOne);
+      Books.each(this.addOne);
     },
   
     createOnEnter: function(e) {
       if (e.code != 13) return;
-      Todos.create({
+      Books.create({
         content: this.input.getProperty("value"),
         done:    false
       });
@@ -192,7 +192,7 @@
     },
     
     clearCompleted: function() {
-      _.each(Todos.done(), function(todo){ todo.clear(); });
+      _.each(Books.done(), function(book){ book.clear(); });
       return false;
     }
   
