@@ -86,9 +86,10 @@ $ ->
       _.bindAll this, "addOne", "addAll", "render"
       @input = @$("#new-book")
       Books.bind "add", @addOne
-      Books.bind "refresh", @addAll
+      Books.bind "reset", @addAll
       Books.bind "all", @render
       Books.fetch()
+      @
 
     render: ->
       selected = Books.selected().length
@@ -96,7 +97,7 @@ $ ->
         selected: selected
         total: Books.length
         remaining: Books.length - selected
-      }
+      )
 
     addOne: (book) ->
       view = new BookView(model: book).render().el
