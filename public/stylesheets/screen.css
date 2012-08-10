@@ -206,8 +206,7 @@ body {
   float: left;
 }
 /* line 93 */
-#bookr .content ul#book-list li.done .book-content {
-  text-decoration: line-through;
+#bookr .content ul#book-list li.selected .book-content {
   color: #777777;
 }
 /* line 96 */

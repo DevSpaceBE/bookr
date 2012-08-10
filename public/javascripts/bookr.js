@@ -4,7 +4,7 @@
   window.Book = Backbone.Model.extend({
   
     toggle: function() {
-      this.save({done: !this.get("done")});
+      this.save({selected: !this.get("selected")});
     },
 
     // Remove this Book from *localStorage*, deleting its view.
@@ -21,10 +21,10 @@
     model: Book,
     localStorage: new Store("books"),
   
-    // Returns all done books.
-    done: function() {
+    // Returns all selected books.
+    selected: function() {
       return this.filter(function(book){
-        return book.get('done');
+        return book.get('selected');
       });
     },
 
@@ -53,8 +53,7 @@
     template: _.template("<input type='checkbox' class='book-check' /><div class='book-content'></div><span class='book-destroy'></span><input type='text' class='book-input' />"),
   
     events: {
-      "click .book-check"      : "toggleDone",
-      "dblclick .book-content" : "edit",
+      "click .book-check"      : "toggleSelected",
       "click .book-destroy"    : "clear",
       "keypress .book-input"   : "updateOnEnter"
     },
@@ -78,28 +77,22 @@
       this.$('.book-content').set("html", content);
       this.$('.book-input').setProperty("value", content);
       
-      if (this.model.get('done')) {
+      if (this.model.get('selected')) {
         this.$(".book-check").setProperty("checked", "checked");
-        $(this.el).addClass("done");
+        $(this.el).addClass("selected");
       } else {
         this.$(".book-check").removeProperty("checked");
-        $(this.el).removeClass("done");
+        $(this.el).removeClass("selected");
       }
       
       this.input = this.$(".book-input");
       this.input.addEvent('blur', this.close);
     },
     
-    toggleDone: function() {
+    toggleSelected: function() {
       this.model.toggle();
     },
   
-    edit: function() {
-      $(this.el).addClass("editing");
-      //this.input.fireEvent("focus");
-      this.input.focus();
-    },
-    
     close: function() {
       this.model.save({content: this.input.getProperty("value")});
       $(this.el).removeClass("editing");
@@ -130,7 +123,7 @@
   window.AppView = Backbone.View.extend({
   
     el: $("bookr"),
-    statsTemplate: _.template('<% if (total) { %><span class="book-count"><span class="number"><%= remaining %></span><span class="word"> <%= remaining == 1 ? "item" : "items" %></span> left.</span><% } %><% if (done) { %><span class="book-clear"><a href="#">Clear <span class="number-done"><%= done %> </span>completed <span class="word-done"><%= done == 1 ? "item" : "items" %></span></a></span><% } %>'),
+    statsTemplate: _.template('<% if (total) { %><span class="book-count"><span class="number"><%= remaining %></span><span class="word"> <%= remaining == 1 ? "book" : "books" %></span> yet to select.</span><% } %><% if (selected) { %><span class="book-clear"><a href="#">Add <span class="number-selected"><%= selected %> </span>selected <span class="word-selected"><%= selected == 1 ? "book" : "books" %></span></a></span><% } %>'),
   
     events: {
       "keypress #new-book" : "createOnEnter",
@@ -151,11 +144,11 @@
     },
     
     render: function() {
-      var done = Books.done().length;
+      var selected = Books.selected().length;
       this.$("#book-stats").set("html",this.statsTemplate({
-        done:       done,
+        selected:       selected,
         total:      Books.length,
-        remaining:  Books.length - done
+        remaining:  Books.length - selected
       }));
     },
     
@@ -173,7 +166,7 @@
       if (e.code != 13) return;
       Books.create({
         content: this.input.getProperty("value"),
-        done:    false
+        selected:    false
       });
       this.input.setProperty("value", "");
     },
@@ -192,7 +185,7 @@
     },
     
     clearCompleted: function() {
-      _.each(Books.done(), function(book){ book.clear(); });
+      _.each(Books.selected(), function(book){ book.clear(); });
       return false;
     }
   
