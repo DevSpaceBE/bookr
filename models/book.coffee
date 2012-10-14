@@ -2,7 +2,7 @@ mongoose = require 'mongoose'
 
 db          = mongoose.createConnection 'localhost', 'bookr'
 
-book_schema = mongoose.Schema
+bookSchema = mongoose.Schema
   authors             : [String]
   averageRating       : Number
   ratingsCount        : Number
@@ -21,6 +21,6 @@ book_schema = mongoose.Schema
   previewLink         : String
   canonicalVolumeLink : String
 
-Book = db.model 'Book', book_schema
+Book = db.model 'Book', bookSchema
 
 module.exports = Book
