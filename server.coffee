@@ -1,5 +1,6 @@
 express = require 'express'
 expressCoffee = require 'express-coffee'
+util          = require 'util'
 app           = express()
 Book          = require './models/book'
 
@@ -18,14 +19,22 @@ app.configure ->
 
 app.get '/books', (req, res) ->
   Book.find (err, books) ->
-    throw new Error err if err?
-    res.json(books)
+    if err?
+      res.status 500
+      res.end util.inspect(err)
+    else
+      res.status 200
+      res.json(books)
 
 app.post '/books', (req, res) ->
   bookAttrs = req.body
   Book.create bookAttrs, (err, book) ->
-    res.status 201
-    res.end()
+    if err?
+      res.status 500
+      res.end util.inspect(err)
+    else
+      res.status 201
+      res.end()
 
 app.listen 1337
 console.log "Listening on 1337..."

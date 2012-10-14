@@ -1,4 +1,3 @@
-
   $(function() {
     window.Book = Backbone.Model.extend({
       toggle: function() {
@@ -38,7 +37,7 @@
     window.BookView = Backbone.View.extend({
       tagName: "li",
       className: "book",
-      template: _.template("<input type='checkbox' class='book-check' /><div class='book-isbn'></div><span class='book-destroy'></span><input type='text' class='book-input' />"),
+      template: _.template("<input type='checkbox' class='book-check' /><div class='book'></div><span class='book-destroy'></span><input type='text' class='book-input' />"),
       events: {
         "click .book-check": "toggleSelected",
         "click .book-destroy": "clear"
@@ -56,8 +55,8 @@
       },
       setContent: function() {
         var isbn;
-        isbn = this.model.get("isbn");
-        this.$(".book-isbn").html(isbn);
+        title = this.model.get("title");
+        this.$(".book").html(title);
         this.$(".book-input").val(isbn);
         if (this.model.get("selected")) {
           this.$(".book-check").prop("checked", true);
@@ -117,9 +116,10 @@
       },
       createOnEnter: function(e) {
         if (e.keyCode !== 13) return;
-        Books.create({
-          isbn: this.input.val(),
-          selected: false
+        var isbn = this.input.val();
+        var request = gapi.client.books.volumes.list({'q': {'isbn': isbn}});
+        request.execute(function(response){
+          Books.create(response.result.items[0].volumeInfo);
         });
         return this.input.val("");
       },
@@ -132,3 +132,8 @@
     });
     return window.App = new AppView;
   });
+
+  function GoogleApiOnload(){
+    gapi.client.setApiKey("AIzaSyAmiUyoMClSzHIRs47csnhCtC4QAK6FHBQ");
+    gapi.client.load('books', 'v1');
+  };
