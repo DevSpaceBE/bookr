@@ -1,6 +1,6 @@
 express = require 'express'
 expressCoffee = require 'express-coffee'
-util          = require 'util'
+inspect       = require('util').inspect
 app           = express()
 Book          = require './models/book'
 
@@ -31,7 +31,7 @@ app.post '/books', (req, res) ->
   Book.create bookAttrs, (err, book) ->
     if err?
       res.status 500
-      res.end util.inspect(err)
+      res.end inspect(err)
     else
       res.status 201
       res.end()
