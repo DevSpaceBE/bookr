@@ -67,7 +67,9 @@
         <input type='checkbox' class='book-check' />
       </div>
       <div class='book'>
-        <img src='{{imageLinks.smallThumbnail}}' alt='{{title}}' class="book-cover" />
+        {{#if imageLinks.smallThumbnail}}
+          <img src='{{imageLinks.smallThumbnail}}' alt='{{title}}' class="book-cover" />
+        {{/if}}
         <div class="title">
           {{title}}
         </div>
