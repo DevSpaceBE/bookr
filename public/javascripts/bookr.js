@@ -1,5 +1,5 @@
 (function() {
-  var App, Books, googleApiOnload;
+  var googleApiOnload;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   googleApiOnload = function() {
@@ -25,9 +25,7 @@
     }
 
     Book.prototype.toggle = function() {
-      return this.save({
-        selected: !this.get("selected")
-      });
+      return this.selected = !this.get("selected");
     };
 
     Book.prototype.clear = function() {
@@ -78,7 +76,7 @@
 
   })();
 
-  Books = new Bookr.Collections.BookList;
+  window.Books = new Bookr.Collections.BookList;
 
   Bookr.Views.AppView = (function() {
 
@@ -161,7 +159,7 @@
 
   })();
 
-  App = new Bookr.Views.AppView;
+  window.App = new Bookr.Views.AppView;
 
   Bookr.Views.BookView = (function() {
 
@@ -191,15 +189,12 @@
     BookView.prototype.render = function() {
       this.template = Handlebars.compile($(this.bookTemplateId).html());
       $(this.el).html(this.template(this.model.toJSON()));
-      $(this.el).attr("id", "book-" + this.model.id);
+      $(this.el).attr("id", "book-" + this.model.get('_id'));
       this.setContent();
       return this;
     };
 
     BookView.prototype.setContent = function() {
-      var title;
-      title = this.model.get("title");
-      this.$(".book").html(title);
       this.$(".book-input").val("");
       if (this.model.get("selected")) {
         this.$(".book-check").prop("checked", true);

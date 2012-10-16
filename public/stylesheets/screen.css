@@ -331,3 +331,36 @@ body {
 .template{
   display: none;
 }
+
+#book-list .checkbox-wrapper{
+  width: 20%;
+}
+
+#book-list .book{
+  float: left;
+  width: 80%;
+}
+
+#book-list .book .title{
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#book-list .book .authors{
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#book-list .book .publisher{
+  font-size: 12px;
+}
+
+#book-list .book-cover{
+  float: left;
+  margin: 6px 10px 10px 0;
+}
+
+#book-stats{
+  clear: both;
+}

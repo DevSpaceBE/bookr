@@ -12,7 +12,7 @@ window.Bookr =
 
 class Bookr.Models.Book extends Backbone.Model
   toggle: ->
-    @save selected: not @get("selected")
+    @selected = not @get("selected")
 
   clear: ->
     @destroy()
@@ -37,7 +37,7 @@ class Bookr.Collections.BookList extends Backbone.Collection
   pluralize: (count) ->
     (if count is 1 then "book" else "books")
 
-Books = new Bookr.Collections.BookList;
+window.Books = new Bookr.Collections.BookList;
 
 class Bookr.Views.AppView extends Backbone.View
   el: $("#bookr")
@@ -90,7 +90,7 @@ class Bookr.Views.AppView extends Backbone.View
       book.clear();
     false;
 
-App = new Bookr.Views.AppView;
+window.App = new Bookr.Views.AppView;
 
 class Bookr.Views.BookView extends Backbone.View
   tagName:   "li"
@@ -108,13 +108,11 @@ class Bookr.Views.BookView extends Backbone.View
   render: ->
     @template = Handlebars.compile($(@bookTemplateId).html())
     $(@el).html(@template(@model.toJSON()))
-    $(@el).attr("id", "book-" + @model.id)
+    $(@el).attr("id", "book-" + @model.get('_id'))
     @setContent()
     @
 
   setContent: ->
-    title = @model.get("title")
-    @$(".book").html(title)
     @$(".book-input").val("")
     if (@model.get("selected"))
       @$(".book-check").prop("checked", true)
