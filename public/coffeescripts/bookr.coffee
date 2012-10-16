@@ -11,11 +11,18 @@ window.Bookr =
   Routers: {}
 
 class Bookr.Models.Book extends Backbone.Model
+  idAttribute: "_id"
+
   toggle: ->
-    @selected = not @get("selected")
+    selected = not @get("selected")
+    @set('selected', selected)
 
   clear: ->
-    @destroy()
+    @destroy
+      wait: true
+      success: @remove
+
+  remove: =>
     $(@view.el).remove()
 
 class Bookr.Collections.BookList extends Backbone.Collection
@@ -82,13 +89,14 @@ class Bookr.Views.AppView extends Backbone.View
       isbn    = @input.val();
       request = gapi.client.books.volumes.list({'q': {'isbn': isbn}})
       request.execute (response)->
-        Books.create(response.result.items[0].volumeInfo)
+        Books.create(
+          response.result.items[0].volumeInfo
+          { wait: true }
+        )
       @input.val("")
 
   clearCompleted: ->
-    _.each Books.selected(), (book)->
-      book.clear();
-    false;
+    false
 
 window.App = new Bookr.Views.AppView;
 

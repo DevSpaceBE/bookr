@@ -20,6 +20,7 @@ bookSchema = mongoose.Schema
   infoLink            : String
   previewLink         : String
   canonicalVolumeLink : String
+  createdAt           : { type: Date, default: Date.now }
 
 Book = db.model 'Book', bookSchema
 

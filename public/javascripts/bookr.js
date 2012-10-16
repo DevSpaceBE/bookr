@@ -1,6 +1,6 @@
 (function() {
   var googleApiOnload;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   googleApiOnload = function() {
     gapi.client.setApiKey("AIzaSyAmiUyoMClSzHIRs47csnhCtC4QAK6FHBQ");
@@ -21,15 +21,26 @@
     __extends(Book, Backbone.Model);
 
     function Book() {
+      this.remove = __bind(this.remove, this);
       Book.__super__.constructor.apply(this, arguments);
     }
 
+    Book.prototype.idAttribute = "_id";
+
     Book.prototype.toggle = function() {
-      return this.selected = !this.get("selected");
+      var selected;
+      selected = !this.get("selected");
+      return this.set('selected', selected);
     };
 
     Book.prototype.clear = function() {
-      this.destroy();
+      return this.destroy({
+        wait: true,
+        success: this.remove
+      });
+    };
+
+    Book.prototype.remove = function() {
       return $(this.view.el).remove();
     };
 
@@ -142,16 +153,15 @@
           }
         });
         request.execute(function(response) {
-          return Books.create(response.result.items[0].volumeInfo);
+          return Books.create(response.result.items[0].volumeInfo, {
+            wait: true
+          });
         });
         return this.input.val("");
       }
     };
 
     AppView.prototype.clearCompleted = function() {
-      _.each(Books.selected(), function(book) {
-        return book.clear();
-      });
       return false;
     };
 
