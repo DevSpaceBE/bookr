@@ -6,6 +6,7 @@
     <script language="javascript" src="javascripts/jquery.js" type="text/javascript"></script>
     <script language="javascript" src="javascripts/underscore.js" type="text/javascript"></script>
     <script language="javascript" src="javascripts/backbone.js" type="text/javascript"></script>
+    <script language="javascript" src="javascripts/handlebars.js" type="text/javascript"></script>
   </head>
   <body>
     <div id='bookr'>
@@ -23,6 +24,51 @@
       </div>
       <div id='book-stats'></div>
     </div>
+
+    <!--
+      Handlebar templates
+    -->
+    <div id="stats-template" class="template">
+      {{#if total}}
+        <span class="book-count">
+          <span class="number">
+            {{remaining}}
+          </span>
+          <span class="word">
+            {{#if one}}
+              book
+            {{else}}
+              books
+            {{/if}}
+          </span> yet to select.
+        </span>
+        {{#if selected}}
+          <span class="book-clear">
+            <a href="#">Add
+              {{#if multiple_selected}}
+                <span class="number-selected">{{selected}}</span>
+              {{/if}}
+              selected
+              <span class="word-selected">
+              {{#if one_selected}}
+                book
+              {{else}}
+                books
+              {{/if}}
+              </span>
+            </a>
+          </span>
+        {{/if}}
+      {{/if}}
+    </div>
+
+    <div id="book-template" class="template">
+      <input type='checkbox' class='book-check' />
+      <div class='book'></div>
+      <span class='book-destroy'></span>
+      <input type='text' class='book-input' />
+    </div>
+
     <script language="javascript" src="javascripts/bookr.js" type="text/javascript"></script>
     <script language="javascript" src= "https://apis.google.com/js/client.js?onload=googleApiOnload" type="text/javascript"></script>
   </body>

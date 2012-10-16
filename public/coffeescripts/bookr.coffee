@@ -41,7 +41,7 @@ Books = new Bookr.Collections.BookList;
 
 class Bookr.Views.AppView extends Backbone.View
   el: $("#bookr")
-  statsTemplate: _.template("<% if (total) { %><span class=\"book-count\"><span class=\"number\"><%= remaining %></span><span class=\"word\"> <%= remaining == 1 ? \"book\" : \"books\" %></span> yet to select.</span><% } %><% if (selected) { %><span class=\"book-clear\"><a href=\"#\">Add <span class=\"number-selected\"><%= selected %> </span>selected <span class=\"word-selected\"><%= selected == 1 ? \"book\" : \"books\" %></span></a></span><% } %>")
+  statsTemplateId: "#stats-template"
   events:
     "keypress #new-book": "createOnEnter"
     "click .book-clear": "clearCompleted"
@@ -56,12 +56,17 @@ class Bookr.Views.AppView extends Backbone.View
     @
 
   render: ->
-    selected = Books.selected().length
-    @$("#book-stats").html(@statsTemplate(
-      selected: selected
-      total: Books.length
-      remaining: Books.length - selected
-    ))
+    selected       = Books.selected().length
+    @statsTemplate = Handlebars.compile($(@statsTemplateId).html())
+    remaining      = Books.length - selected
+    @$("#book-stats").html(@statsTemplate
+      selected         : selected
+      total            : Books.length
+      remaining        : remaining
+      one              : remaining == 1
+      multiple_selected: selected != 1
+      one_selected     : selected == 1
+    )
 
   addOne: (book)->
     view = new Bookr.Views.BookView(
@@ -90,7 +95,7 @@ App = new Bookr.Views.AppView;
 class Bookr.Views.BookView extends Backbone.View
   tagName:   "li"
   className: "book"
-  template: _.template("<input type='checkbox' class='book-check' /><div class='book'></div><span class='book-destroy'></span><input type='text' class='book-input' />")
+  bookTemplateId: "#book-template"
   events:
     "click .book-check": "toggleSelected"
     "click .book-destroy": "clear"
@@ -101,6 +106,7 @@ class Bookr.Views.BookView extends Backbone.View
     @model.view = @
 
   render: ->
+    @template = Handlebars.compile($(@bookTemplateId).html())
     $(@el).html(@template(@model.toJSON()))
     $(@el).attr("id", "book-" + @model.id)
     @setContent()

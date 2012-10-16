@@ -90,7 +90,7 @@
 
     AppView.prototype.el = $("#bookr");
 
-    AppView.prototype.statsTemplate = _.template("<% if (total) { %><span class=\"book-count\"><span class=\"number\"><%= remaining %></span><span class=\"word\"> <%= remaining == 1 ? \"book\" : \"books\" %></span> yet to select.</span><% } %><% if (selected) { %><span class=\"book-clear\"><a href=\"#\">Add <span class=\"number-selected\"><%= selected %> </span>selected <span class=\"word-selected\"><%= selected == 1 ? \"book\" : \"books\" %></span></a></span><% } %>");
+    AppView.prototype.statsTemplateId = "#stats-template";
 
     AppView.prototype.events = {
       "keypress #new-book": "createOnEnter",
@@ -108,12 +108,17 @@
     };
 
     AppView.prototype.render = function() {
-      var selected;
+      var remaining, selected;
       selected = Books.selected().length;
+      this.statsTemplate = Handlebars.compile($(this.statsTemplateId).html());
+      remaining = Books.length - selected;
       return this.$("#book-stats").html(this.statsTemplate({
         selected: selected,
         total: Books.length,
-        remaining: Books.length - selected
+        remaining: remaining,
+        one: remaining === 1,
+        multiple_selected: selected !== 1,
+        one_selected: selected === 1
       }));
     };
 
@@ -170,7 +175,7 @@
 
     BookView.prototype.className = "book";
 
-    BookView.prototype.template = _.template("<input type='checkbox' class='book-check' /><div class='book'></div><span class='book-destroy'></span><input type='text' class='book-input' />");
+    BookView.prototype.bookTemplateId = "#book-template";
 
     BookView.prototype.events = {
       "click .book-check": "toggleSelected",
@@ -184,6 +189,7 @@
     };
 
     BookView.prototype.render = function() {
+      this.template = Handlebars.compile($(this.bookTemplateId).html());
       $(this.el).html(this.template(this.model.toJSON()));
       $(this.el).attr("id", "book-" + this.model.id);
       this.setContent();

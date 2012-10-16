@@ -327,3 +327,7 @@ body {
 #credits a {
   color: #888888;
 }
+
+.template{
+  display: none;
+}
