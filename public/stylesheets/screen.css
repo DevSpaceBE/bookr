@@ -328,10 +328,6 @@ body {
   color: #888888;
 }
 
-.template{
-  display: none;
-}
-
 #book-list .checkbox-wrapper{
   width: 20%;
 }

@@ -7,28 +7,12 @@
     <script language="javascript" src="javascripts/underscore.js" type="text/javascript"></script>
     <script language="javascript" src="javascripts/backbone.js" type="text/javascript"></script>
     <script language="javascript" src="javascripts/handlebars.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <div id='bookr'>
-      <div class='title'>
-        <h1>Add books to the library</h1>
-      </div>
-      <div class='content'>
-        <div id='create-book'>
-          <input id='new-book' placeholder='Enter an ISBN:' type='text' pattern='\d{10}|\d{13}' />
-          <span class='ui-tooltip-top'>Press Enter to find this book.</span>
-        </div>
-        <div id='books'>
-          <ul id='book-list'></ul>
-        </div>
-      </div>
-      <div id='book-stats'></div>
-    </div>
 
     <!--
       Handlebar templates
     -->
-    <div id="stats-template" class="template">
+
+    <script id="stats-template" type="application/prs.mustache-template">
       {{#if total}}
         <span class="book-count">
           <span class="number">
@@ -60,9 +44,9 @@
           </span>
         {{/if}}
       {{/if}}
-    </div>
+    </script>
 
-    <div id="book-template" class="template">
+    <script id="book-template" type="application/prs.mustache-template">
       <div class="checkbox-wrapper">
         <input type='checkbox' class='book-check' />
       </div>
@@ -84,7 +68,25 @@
       <div class='book-list-footer'>
         <input type='text' class='book-input' />
       </div>
+    </script>
+  </head>
+  <body>
+    <div id='bookr'>
+      <div class='title'>
+        <h1>Add books to the library</h1>
+      </div>
+      <div class='content'>
+        <div id='create-book'>
+          <input id='new-book' placeholder='Enter an ISBN:' type='text' pattern='\d{10}|\d{13}' />
+          <span class='ui-tooltip-top'>Press Enter to find this book.</span>
+        </div>
+        <div id='books'>
+          <ul id='book-list'></ul>
+        </div>
+      </div>
+      <div id='book-stats'></div>
     </div>
+
 
     <script language="javascript" src="javascripts/bookr.js" type="text/javascript"></script>
     <script language="javascript" src= "https://apis.google.com/js/client.js?onload=googleApiOnload" type="text/javascript"></script>
